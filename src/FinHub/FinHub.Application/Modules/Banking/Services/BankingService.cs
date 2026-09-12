@@ -111,6 +111,39 @@ public sealed class BankingService : IBankingService
             .ToList();
     }
 
+    public async Task<List<TransactionDto>> GetCustomerTransactionsAsync(Guid customerId, int page = 1, int pageSize = 25, CancellationToken cancellationToken = default)
+    {
+        if (page < 1)
+            page = 1;
+
+        if (pageSize < 1)
+            pageSize = 25;
+
+        var customer = await _customerRepository.GetByIdAsync(customerId, cancellationToken)
+            ?? throw new KeyNotFoundException($"Customer with ID '{customerId}' was not found.");
+
+        var accounts = await _accountRepository.GetByCustomerIdAsync(customer.Id, cancellationToken);
+        var transactions = accounts
+            .SelectMany(a => a.Transactions)
+            .OrderByDescending(t => t.TransactionDate)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(t => new TransactionDto
+            {
+                Id = t.Id,
+                AccountId = t.AccountId,
+                Type = t.Type.ToString(),
+                Amount = t.Amount.Amount,
+                Currency = t.Amount.Currency.ToString(),
+                Description = t.Description,
+                ReferenceNumber = t.ReferenceNumber,
+                TransactionDate = t.TransactionDate
+            })
+            .ToList();
+
+        return transactions;
+    }
+
     private static BankAccountDto MapToDto(BankAccount account)
     {
         return new BankAccountDto

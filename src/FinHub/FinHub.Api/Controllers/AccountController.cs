@@ -111,4 +111,18 @@ public sealed class AccountController : ControllerBase
             return NotFound(new { error = ex.Message });
         }
     }
+
+    [HttpGet("customer/{customerId:guid}/transactions")]
+    public async Task<ActionResult<List<TransactionDto>>> GetCustomerTransactions(Guid customerId, [FromQuery] int page = 1, [FromQuery] int pageSize = 25, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var transactions = await _bankingService.GetCustomerTransactionsAsync(customerId, page, pageSize, cancellationToken);
+            return Ok(transactions);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
 }

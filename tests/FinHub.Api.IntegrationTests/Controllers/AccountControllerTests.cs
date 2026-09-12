@@ -47,4 +47,33 @@ public class AccountControllerTests : IClassFixture<WebApplicationFactory<Progra
         _output.WriteLine($"DEPOSIT RESPONSE JSON: {depStr}");
         Assert.Equal(HttpStatusCode.OK, depRes.StatusCode);
     }
+
+    [Fact]
+    public async Task CustomerTransactionInquiry_ShouldReturnFilteredPageableTransactionFeed()
+    {
+        var regReq = new RegisterRequest("banktransactions@finhub.sa", "Bank Transactions User", "StrongPassword123!");
+        var regRes = await _client.PostAsJsonAsync("/api/v1/auth/register", regReq);
+        var authData = await regRes.Content.ReadFromJsonAsync<AuthResponse>(_jsonOptions);
+        Assert.NotNull(authData);
+
+        var createCmd = new CreateAccountCommand(authData.CustomerId, "Savings", 1000, "SAR");
+        var createRes = await _client.PostAsJsonAsync("/api/v1/accounts", createCmd);
+        Assert.Equal(HttpStatusCode.Created, createRes.StatusCode);
+
+        var account = await createRes.Content.ReadFromJsonAsync<BankAccountDto>(_jsonOptions);
+        Assert.NotNull(account);
+
+        var depRes = await _client.PostAsJsonAsync($"/api/v1/accounts/{account.Id}/deposit", new DepositCommand(250, "SAR", "Salary Transfer"));
+        Assert.Equal(HttpStatusCode.OK, depRes.StatusCode);
+
+        var transRes = await _client.GetAsync($"/api/v1/accounts/customer/{authData.CustomerId}/transactions?page=1&pageSize=10");
+        var transPayload = await transRes.Content.ReadAsStringAsync();
+        _output.WriteLine($"TRANSACTION QUERY RESPONSE JSON: {transPayload}");
+
+        Assert.Equal(HttpStatusCode.OK, transRes.StatusCode);
+
+        var txns = await transRes.Content.ReadFromJsonAsync<List<TransactionDto>>(_jsonOptions);
+        Assert.NotNull(txns);
+        Assert.NotEmpty(txns);
+    }
 }

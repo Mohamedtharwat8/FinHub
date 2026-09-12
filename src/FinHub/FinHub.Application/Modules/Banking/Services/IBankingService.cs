@@ -10,4 +10,5 @@ public interface IBankingService
     Task<BankAccountDto> DepositAsync(Guid accountId, DepositCommand command, CancellationToken cancellationToken = default);
     Task<BankAccountDto> WithdrawAsync(Guid accountId, WithdrawCommand command, CancellationToken cancellationToken = default);
     Task<List<TransactionDto>> GetTransactionsAsync(Guid accountId, CancellationToken cancellationToken = default);
+    Task<List<TransactionDto>> GetCustomerTransactionsAsync(Guid customerId, int page = 1, int pageSize = 25, CancellationToken cancellationToken = default);
 }
