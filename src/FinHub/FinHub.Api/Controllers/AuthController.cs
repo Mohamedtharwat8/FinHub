@@ -60,4 +60,65 @@ public sealed class AuthController : ControllerBase
             return Unauthorized(new { error = ex.Message });
         }
     }
+
+    [HttpPost("external-login")]
+    public async Task<ActionResult<AuthResponse>> ExternalLogin([FromBody] ExternalLoginRequest request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _identityService.ExternalLoginAsync(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpPost("send-otp")]
+    public async Task<ActionResult> SendOtp([FromBody] SendOtpRequest request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var otpCode = await _identityService.SendOtpAsync(request, cancellationToken);
+            return Ok(new { message = "OTP sent successfully.", target = request.Target, otpDemo = otpCode });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpPost("verify-otp")]
+    public async Task<ActionResult> VerifyOtp([FromBody] VerifyOtpRequest request, CancellationToken cancellationToken)
+    {
+        var isValid = await _identityService.VerifyOtpAsync(request, cancellationToken);
+        if (isValid)
+        {
+            return Ok(new { verified = true, message = "OTP verified successfully." });
+        }
+        return BadRequest(new { verified = false, error = "Invalid or expired OTP code." });
+    }
+
+    [HttpPost("register-phone")]
+    public async Task<ActionResult<AuthResponse>> RegisterWithPhone([FromBody] PhoneRegisterRequest request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _identityService.RegisterWithPhoneAsync(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { error = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { error = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
 }

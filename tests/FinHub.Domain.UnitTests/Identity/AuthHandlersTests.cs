@@ -15,7 +15,9 @@ public class AuthHandlersTests
         var hasher = new PasswordHasher();
         var jwt = new JwtTokenGenerator();
         var totp = new TotpService();
-        _service = new IdentityService(repo, hasher, jwt, totp);
+        var otp = new OtpService();
+        var oauth = new OAuthService();
+        _service = new IdentityService(repo, hasher, jwt, totp, otp, oauth);
     }
 
     [Fact]

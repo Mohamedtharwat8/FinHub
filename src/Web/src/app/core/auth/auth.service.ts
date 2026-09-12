@@ -59,6 +59,26 @@ export class AuthService {
     );
   }
 
+  public externalLogin(provider: string, token: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/external-login`, { provider, token }).pipe(
+      tap(res => this.handleAuthSuccess(res))
+    );
+  }
+
+  public sendOtp(target: string, purpose: string = 'Registration'): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/send-otp`, { target, purpose });
+  }
+
+  public verifyOtp(target: string, code: string, purpose: string = 'Registration'): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/verify-otp`, { target, code, purpose });
+  }
+
+  public registerWithPhone(phoneNumber: string, fullName: string, otpCode: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/register-phone`, { phoneNumber, fullName, otpCode }).pipe(
+      tap(res => this.handleAuthSuccess(res))
+    );
+  }
+
   public refreshToken(): Observable<AuthResponse> {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {

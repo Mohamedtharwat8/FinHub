@@ -40,6 +40,13 @@ public sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
                 value => value != null ? new NationalId(value) : null)
             .HasMaxLength(10);
 
+        // PhoneNumber Value Object Mapping (Optional)
+        builder.Property(c => c.PhoneNumber)
+            .HasConversion(
+                phone => phone != null ? phone.Value : null,
+                value => value != null ? new PhoneNumber(value) : null)
+            .HasMaxLength(20);
+
         // Complex Address Owned Type Mapping
         builder.OwnsOne(c => c.Address, address =>
         {
@@ -50,6 +57,15 @@ public sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             address.Property(a => a.PostalCode).HasColumnName("Address_PostalCode").HasMaxLength(10);
             address.Property(a => a.AdditionalNumber).HasColumnName("Address_AdditionalNumber").HasMaxLength(10);
             address.Property(a => a.Country).HasColumnName("Address_Country").HasMaxLength(100);
+        });
+
+        // External Logins Owned Collection Mapping
+        builder.OwnsMany(c => c.ExternalLogins, el =>
+        {
+            el.WithOwner();
+            el.Property(x => x.Provider).HasMaxLength(50);
+            el.Property(x => x.ProviderKey).HasMaxLength(100);
+            el.Property(x => x.Email).HasMaxLength(256);
         });
 
         builder.Ignore(c => c.DomainEvents);
