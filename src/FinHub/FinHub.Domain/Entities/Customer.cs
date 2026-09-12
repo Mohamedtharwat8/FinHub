@@ -11,6 +11,8 @@ public sealed class Customer
     public string FullName { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
     public UserRole Role { get; private set; }
+    public NationalId? NationalId { get; private set; }
+    public Address? Address { get; private set; }
     public bool IsEmailVerified { get; private set; }
     public bool IsMfaEnabled { get; private set; }
     public string? MfaSecret { get; set; }
@@ -63,6 +65,18 @@ public sealed class Customer
     public void VerifyEmail()
     {
         IsEmailVerified = true;
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void SetNationalId(NationalId nationalId)
+    {
+        NationalId = nationalId;
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void UpdateAddress(Address address)
+    {
+        Address = address;
         UpdatedAt = DateTimeOffset.UtcNow;
     }
 
