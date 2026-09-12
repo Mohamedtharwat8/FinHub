@@ -6,6 +6,8 @@ namespace FinHub.Infrastructure.Persistence;
 public sealed class FinHubDbContext : DbContext
 {
     public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<BankAccount> BankAccounts => Set<BankAccount>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
     public FinHubDbContext(DbContextOptions<FinHubDbContext> options) : base(options)
     {
