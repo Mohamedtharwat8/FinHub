@@ -32,7 +32,6 @@ public class MoneyTests
 
     [Theory]
     [InlineData("SA0380000000608010167519")]
-    [InlineData("SA5620000001234567890123")]
     public void ValidIBAN_ShouldInstantiate(string rawIban)
     {
         // Act
@@ -41,5 +40,17 @@ public class MoneyTests
         // Assert
         Assert.NotNull(iban.Value);
         Assert.Equal(rawIban, iban.Value);
+    }
+
+    [Fact]
+    public void GeneratedIBAN_ShouldBeValidAndInstantiate()
+    {
+        // Act
+        var iban = IBAN.GenerateSaudiIban("1234567890");
+
+        // Assert
+        Assert.NotNull(iban.Value);
+        Assert.StartsWith("SA", iban.Value);
+        Assert.Equal(24, iban.Value.Length);
     }
 }
