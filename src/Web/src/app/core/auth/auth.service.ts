@@ -26,7 +26,13 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private readonly API_URL = 'http://localhost:5000/api/v1/auth';
+  private get API_URL(): string {
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      return 'https://finhub-w9xq.onrender.com/api/v1/auth';
+    }
+    return 'http://localhost:5000/api/v1/auth';
+  }
+
   private readonly TOKEN_KEY = 'finhub_access_token';
   private readonly REFRESH_KEY = 'finhub_refresh_token';
 
