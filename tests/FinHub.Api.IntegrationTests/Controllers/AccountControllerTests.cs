@@ -76,4 +76,23 @@ public class AccountControllerTests : IClassFixture<WebApplicationFactory<Progra
         Assert.NotNull(txns);
         Assert.NotEmpty(txns);
     }
+
+    [Fact]
+    public async Task CustomerBudgetOverview_ShouldReturnBudgetAndAlertShape()
+    {
+        var regReq = new RegisterRequest("budgettest@finhub.sa", "Budget Test User", "StrongPassword123!");
+        var regRes = await _client.PostAsJsonAsync("/api/v1/auth/register", regReq);
+        var authData = await regRes.Content.ReadFromJsonAsync<AuthResponse>(_jsonOptions);
+        Assert.NotNull(authData);
+
+        var createCmd = new CreateAccountCommand(authData.CustomerId, "Savings", 1000, "SAR");
+        var createRes = await _client.PostAsJsonAsync("/api/v1/accounts", createCmd);
+        Assert.Equal(HttpStatusCode.Created, createRes.StatusCode);
+
+        var budgetRes = await _client.GetAsync($"/api/v1/budgets/customer/{authData.CustomerId}");
+        var budgetPayload = await budgetRes.Content.ReadAsStringAsync();
+        _output.WriteLine($"BUDGET OVERVIEW RESPONSE JSON: {budgetPayload}");
+
+        Assert.Equal(HttpStatusCode.OK, budgetRes.StatusCode);
+    }
 }

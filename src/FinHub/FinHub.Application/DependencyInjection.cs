@@ -1,4 +1,5 @@
 using FinHub.Application.Modules.Banking.Services;
+using FinHub.Application.Modules.Budgeting.Services;
 using FinHub.Application.Modules.Customer.Services;
 using FinHub.Application.Modules.Identity.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IBankingService, BankingService>();
+        services.AddScoped<IBudgetingService, BudgetingService>();
         return services;
     }
 }

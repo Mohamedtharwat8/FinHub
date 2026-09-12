@@ -1,0 +1,1 @@
+Budget snapshot persistence scaffold for Sprint-5: EF Core can map BudgetSnapshot through FinHubDbContext once migration is added in the same delivery lane as DTO/controller and angular client contract.

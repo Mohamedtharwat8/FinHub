@@ -32,6 +32,7 @@ public static class DependencyInjection
 
         services.AddScoped<ICustomerRepository, EfCustomerRepository>();
         services.AddScoped<IBankAccountRepository, EfBankAccountRepository>();
+        services.AddScoped<IBudgetSnapshotRepository, EfBudgetSnapshotRepository>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<ITotpService, TotpService>();
