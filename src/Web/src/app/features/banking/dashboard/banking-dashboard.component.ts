@@ -7,6 +7,7 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 import { AuthService } from '../../../core/auth/auth.service';
 import { BankingService, BankAccountDto, TransactionDto } from '../../../core/banking/banking.service';
 import { CustomerService, CustomerProfileDto } from '../../../core/customer/customer.service';
+import { BudgetingService, BudgetOverviewDto } from '../../../core/budgeting/budgeting.service';
 
 @Component({
   selector: 'app-banking-dashboard',
@@ -79,6 +80,19 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                 <div class="kpi-val-row">
                   <span class="kpi-value">{{ transactions().length }}</span>
                   <span class="badge-trend {{ transactions().length ? 'green' : 'red' }}">{{ transactions().length ? 'Ready' : 'Empty' }}</span>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-icon blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M4 19h16"/><path d="M5 15l4-4 4 4 5-8"/>
+                  </svg>
+                </div>
+                <div class="kpi-label">Budget &amp; Alerts</div>
+                <div class="kpi-val-row">
+                  <span class="kpi-value">{{ budgetOverview()?.remainingBudget || 0 | number:'1.2-2' }}</span>
+                  <span class="badge-trend {{ (budgetOverview()?.alerts?.length || 0) ? 'red' : 'green' }}">{{ (budgetOverview()?.alerts?.length || 0) ? 'Alerts' : 'Healthy' }}</span>
                 </div>
               </div>
             </div>
@@ -334,12 +348,14 @@ export class BankingDashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private bankingService = inject(BankingService);
   private customerService = inject(CustomerService);
+  private budgetService = inject(BudgetingService);
   private fb = inject(FormBuilder);
 
   public accounts = signal<BankAccountDto[]>([]);
   public selectedAccount = signal<BankAccountDto | null>(null);
   public transactions = signal<TransactionDto[]>([]);
   public customer = signal<CustomerProfileDto | null>(null);
+  public budgetOverview = signal<BudgetOverviewDto | null>(null);
   public language = signal<'en' | 'ar'>('en');
 
   public translation: Record<'en' | 'ar', Record<string, string>> = {
@@ -421,6 +437,7 @@ export class BankingDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadAccounts();
     this.loadCustomerProfile();
+    this.loadBudgetOverview();
   }
 
   public loadCustomerProfile(): void {
@@ -445,6 +462,16 @@ export class BankingDashboardComponent implements OnInit {
         }
       },
       error: (err) => this.errorMessage.set(err.error?.error || 'Failed to load bank accounts.')
+    });
+  }
+
+  public loadBudgetOverview(): void {
+    const user = this.authService.currentUser();
+    if (!user) return;
+
+    this.budgetService.getCustomerBudgetOverview(user.customerId).subscribe({
+      next: (overview) => this.budgetOverview.set(overview),
+      error: () => this.budgetOverview.set(null)
     });
   }
 

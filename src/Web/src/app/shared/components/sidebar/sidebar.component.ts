@@ -43,7 +43,7 @@ import { AuthService } from '../../../core/auth/auth.service';
           <span i18n="@@nav.profile">Profile &amp; KYC</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2a10 10 0 1 0 10 10"/>
             <path d="M12 2a10 10 0 0 1 10 10"/>
@@ -53,14 +53,14 @@ import { AuthService } from '../../../core/auth/auth.service';
           <span i18n="@@nav.sama">SAMA Open Banking</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 12h7l3-7 3 14 2-7h5"/>
           </svg>
           <span i18n="@@nav.transactions">Transactions &amp; Ledger</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 19h16"/>
             <path d="M5 15l4-4 4 4 5-8"/>
@@ -68,7 +68,7 @@ import { AuthService } from '../../../core/auth/auth.service';
           <span i18n="@@nav.budgeting">Budgeting &amp; Alerts</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="7" width="18" height="13" rx="2"/>
             <path d="M3 10h18"/>
@@ -77,7 +77,7 @@ import { AuthService } from '../../../core/auth/auth.service';
           <span i18n="@@nav.paycore">PayCore Payments</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 3l8 4v5c0 5.6-2 8.4-8 10-6-1.6-8-4.4-8-10V7z"/>
             <path d="M9 12l2 2 4-4"/>
@@ -85,7 +85,7 @@ import { AuthService } from '../../../core/auth/auth.service';
           <span i18n="@@nav.fraud">Fraud Engine</span>
         </a>
 
-        <a href="javascript:void(0)" class="nav-item">
+        <a routerLink="/dashboard/accounts" routerLinkActive="active" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 7h16v10H4z"/>
             <path d="M4 17h16v4H4z"/>
