@@ -30,15 +30,15 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
             <div class="trial-banner">
               <div class="banner-info">
                 <div class="info-circle">i</div>
-                <span>During your trial you have 25 free contacts. You can start your subscription now if you would like to import or email the 1000 contacts that come with your plan.</span>
+                <span>{{ getText('trialBanner') }}</span>
               </div>
-              <button class="btn-banner-action">Start your subscription <span>›</span></button>
+              <button class="btn-banner-action" (click)="toggleLanguage()">{{ getText('trialButton') }} <span>›</span></button>
             </div>
 
             <!-- Welcome Header -->
             <div class="welcome-header">
-              <h1>Hey there, {{ userName() }}</h1>
-              <p class="subtext">Here's what's happening in your FinHub + PayCore workspace today</p>
+              <h1>{{ getText('welcome') }} {{ userName() }}</h1>
+              <p class="subtext">{{ getText('welcomeSubtext') }}</p>
             </div>
 
             <!-- Stat Metric Cards Row -->
@@ -49,10 +49,10 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
                   </svg>
                 </div>
-                <div class="kpi-label">FinHub Balance</div>
+                <div class="kpi-label">{{ getText('finhubBalance') }}</div>
                 <div class="kpi-val-row">
                   <span class="kpi-value">{{ totalBalance() > 0 ? (totalBalance() | number:'1.2-2') : '0.00' }}</span>
-                  <span class="badge-trend green">Live</span>
+                  <span class="badge-trend green">{{ getText('languageLive') || 'Live' }}</span>
                 </div>
               </div>
 
@@ -62,10 +62,10 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
                   </svg>
                 </div>
-                <div class="kpi-label">FinHub Accounts</div>
+                <div class="kpi-label">{{ getText('finhubAccounts') }}</div>
                 <div class="kpi-val-row">
                   <span class="kpi-value">{{ accounts().length }}</span>
-                  <span class="badge-trend green">Synced</span>
+                  <span class="badge-trend green">{{ getText('synced') || 'Synced' }}</span>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
                 </div>
-                <div class="kpi-label">PayCore Ledger</div>
+                <div class="kpi-label">{{ getText('paycoreLedger') }}</div>
                 <div class="kpi-val-row">
                   <span class="kpi-value">{{ transactions().length }}</span>
                   <span class="badge-trend {{ transactions().length ? 'green' : 'red' }}">{{ transactions().length ? 'Ready' : 'Empty' }}</span>
@@ -83,53 +83,13 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
               </div>
             </div>
 
-            <!-- Guidance / Integration Cards Section -->
-            <div class="guidance-card">
-              <div class="guidance-header">
-                <div class="guidance-title-row">
-                  <div class="kpi-icon blue">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3>A little guidance</h3>
-                    <p class="subtext">Since you told us you're building a <strong>community...</strong></p>
-                  </div>
-                </div>
-                <button class="btn-close-guidance">✕</button>
-              </div>
-
-              <div class="guidance-grid">
-                <div class="integration-box">
-                  <div class="int-header">
-                    <div class="int-brand circle">C</div>
-                    <span class="arrow-icon">↗</span>
-                  </div>
-                  <h4>Integrated Govera with Circle</h4>
-                  <p>Monetize and manage your Circle community with our Single Sign On (SSO) integration</p>
-                </div>
-
-                <div class="integration-box">
-                  <div class="int-header">
-                    <div class="int-brand discord">
-                      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                    </div>
-                    <span class="arrow-icon">↗</span>
-                  </div>
-                  <h4>Integrated Govera with Discord</h4>
-                  <p>Monetize and manage as Discord server. Automatically invite, manage roles, and remove members if they cancel</p>
-                </div>
-              </div>
-            </div>
-
             <!-- Accounts Action Control Header -->
             <div class="accounts-control-header">
               <div>
-                <h2>Your Bank Accounts (SAMA IBAN)</h2>
-                <p class="subtext">Select an account to view real-time ledger entries</p>
+                <h2>{{ getText('accountsHeader') }}</h2>
+                <p class="subtext">{{ getText('accountsSubtext') }}</p>
               </div>
-              <button class="btn-primary" (click)="openCreateModal()">+ Open New Account</button>
+              <button class="btn-primary" (click)="openCreateModal()">{{ getText('openAccount') }}</button>
             </div>
 
             <!-- Accounts Grid -->
@@ -148,19 +108,19 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                   </div>
                 </div>
               } @empty {
-                <div class="empty-state">No bank accounts found. Click "+ Open New Account" to generate your Saudi IBAN.</div>
+                <div class="empty-state">{{ getText('emptyAccounts') }}</div>
               }
             </div>
 
             <!-- Activity Section -->
             <div class="activity-section">
               <div class="activity-header">
-                <h2>Activity</h2>
-                <div class="activity-filter">All (20) ▾</div>
+                <h2>{{ getText('activity') }}</h2>
+                <div class="activity-filter">{{ getText('lang') }}</div>
               </div>
 
               <div class="activity-group">
-                <div class="date-tag">🗓 {{ selectedAccount()?.type || 'FinHub' }} ledger</div>
+                <div class="date-tag">🗓 {{ selectedAccount()?.type || 'FinHub' }} {{ getText('accountAccount') }}</div>
 
                 <div class="activity-list">
                   @for (tx of transactions(); track tx.id) {
@@ -172,143 +132,16 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
                   } @empty {
                     <div class="activity-item">
                       <div class="dot blue"></div>
-                      <div class="act-text">No PayCore ledger transactions are available for the selected FinHub account.</div>
+                      <div class="act-text">{{ getText('noTransactions') }}</div>
                       <div class="act-time">--</div>
                     </div>
                   }
                 </div>
               </div>
 
-              <button class="btn-load-more">Load more</button>
+              <button class="btn-load-more">{{ getText('loadMore') }}</button>
             </div>
           </main>
-
-          <!-- Right Analytics Column -->
-          <aside class="right-analytics">
-            <!-- Engagement / Billing Pill Switcher -->
-            <div class="toggle-pill-row">
-              <button class="toggle-btn active">Engagement</button>
-              <button class="toggle-btn">Billing</button>
-            </div>
-
-            <!-- Date Controls -->
-            <div class="date-control-row">
-              <span class="date-nav">‹ Q4 2024 ›</span>
-              <button class="btn-dropdown">Button ▾</button>
-            </div>
-
-            <!-- Chart Card 1: People Sparkline -->
-            <div class="chart-card">
-              <div class="chart-card-header">
-                <div>
-                  <div class="chart-number">{{ customer() ? 1 : 0 }}</div>
-                  <div class="chart-title">Customer</div>
-                  <div class="chart-sub">{{ customer()?.fullName || 'FinHub User' }}</div>
-                </div>
-                <button class="btn-share">Share</button>
-              </div>
-
-              <div class="sparkline-wrapper">
-                <!-- Tooltip Mock -->
-                <div class="chart-tooltip">
-                  <div class="tt-date">17-Dec-2025</div>
-                  <div class="tt-val">People: 245</div>
-                </div>
-                <svg viewBox="0 0 300 100" class="line-chart">
-                  <path d="M0 60 Q 40 20 80 45 T 160 50 T 240 10 L 300 60" fill="none" stroke="#2563eb" stroke-width="2.5"/>
-                  <circle cx="255" cy="18" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
-                </svg>
-                <div class="chart-x-labels">
-                  <span>Oct 1</span>
-                  <span>Oct 29</span>
-                  <span>Nov 26</span>
-                  <span>Dec 24</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chart Card 2: Accounts Curve -->
-            <div class="chart-card">
-              <div class="chart-card-header">
-                <div>
-                  <div class="chart-number">{{ accounts().length }}</div>
-                  <div class="chart-title">Accounts</div>
-                  <div class="chart-sub">{{ customer()?.email || 'FinHub profile' }}</div>
-                </div>
-                <button class="btn-share">Share</button>
-              </div>
-
-              <div class="sparkline-wrapper">
-                <svg viewBox="0 0 300 90" class="line-chart">
-                  <path d="M0 70 Q 50 30 100 60 T 200 65 T 280 15" fill="none" stroke="#2563eb" stroke-width="2.5"/>
-                </svg>
-                <div class="chart-x-labels">
-                  <span>Oct 1</span>
-                  <span>Oct 29</span>
-                  <span>Nov 26</span>
-                  <span>Dec 24</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chart Card 3: Emails Volume Bar Chart -->
-            <div class="chart-card">
-              <div class="chart-card-header">
-                <div>
-                  <div class="chart-number">{{ totalBalance() | number:'1.2-2' }}</div>
-                  <div class="chart-title">Total Balance</div>
-                  <div class="chart-sub">{{ selectedAccount()?.currency || 'SAR' }}</div>
-                </div>
-                <button class="btn-share">Share ▾</button>
-              </div>
-
-              <div class="bar-chart-container">
-                <div class="bars-row">
-                  <div class="bar-col" style="height: 40%;"></div>
-                  <div class="bar-col" style="height: 75%;"></div>
-                  <div class="bar-col active" style="height: 50%;">
-                    <div class="bar-pill-tag">1,245</div>
-                  </div>
-                  <div class="bar-col" style="height: 85%;"></div>
-                </div>
-                <div class="chart-x-labels">
-                  <span>Oct 1</span>
-                  <span>Oct 29</span>
-                  <span>Nov 26</span>
-                  <span>Dec 24</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chart Card 4: Tickets Volume Bar Chart -->
-            <div class="chart-card">
-              <div class="chart-card-header">
-                <div>
-                  <div class="chart-number">{{ transactions().length }}</div>
-                  <div class="chart-title">PayCore Transactions</div>
-                  <div class="chart-sub">{{ selectedAccount()?.iban || 'No account selected' }}</div>
-                </div>
-                <button class="btn-share">Share ▾</button>
-              </div>
-
-              <div class="bar-chart-container">
-                <div class="bars-row">
-                  <div class="bar-col" style="height: 60%;"></div>
-                  <div class="bar-col" style="height: 45%;"></div>
-                  <div class="bar-col active" style="height: 90%;">
-                    <div class="bar-pill-tag">7,254</div>
-                  </div>
-                  <div class="bar-col" style="height: 65%;"></div>
-                </div>
-                <div class="chart-x-labels">
-                  <span>Oct 1</span>
-                  <span>Oct 29</span>
-                  <span>Nov 26</span>
-                  <span>Dec 24</span>
-                </div>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
 
@@ -507,6 +340,61 @@ export class BankingDashboardComponent implements OnInit {
   public selectedAccount = signal<BankAccountDto | null>(null);
   public transactions = signal<TransactionDto[]>([]);
   public customer = signal<CustomerProfileDto | null>(null);
+  public language = signal<'en' | 'ar'>('en');
+
+  public translation: Record<'en' | 'ar', Record<string, string>> = {
+    en: {
+      trialBanner: 'FinHub + PayCore workspace',
+      trialButton: 'Start subscription',
+      welcome: 'Hello,',
+      welcomeSubtext: 'Here is what is happening in your FinHub + PayCore workspace today',
+      finhubBalance: 'FinHub Balance',
+      finhubAccounts: 'FinHub Accounts',
+      paycoreLedger: 'PayCore Ledger',
+      accountsHeader: 'Your FinHub Accounts',
+      accountsSubtext: 'Select an account to view the real-time PayCore ledger',
+      openAccount: '+ Open New Account',
+      emptyAccounts: 'No FinHub accounts found. Click “Open New Account” to create a new account.',
+      activity: 'PayCore Activity',
+      noTransactions: 'No PayCore ledger transactions are available for the selected FinHub account.',
+      loadMore: 'Load more',
+      accountAccount: 'account',
+      accountCurrent: 'Current',
+      accountSavings: 'Savings',
+      noProjectCopy: 'No dummy data',
+      lang: 'AR'
+    },
+    ar: {
+      trialBanner: 'مساحة FinHub + PayCore',
+      trialButton: 'ابدأ الاشتراك',
+      welcome: 'مرحباً،',
+      welcomeSubtext: 'هذه هي أبرز نشاطات مساحة FinHub + PayCore اليوم',
+      finhubBalance: 'رصيد FinHub',
+      finhubAccounts: 'حسابات FinHub',
+      paycoreLedger: 'دفتر PayCore',
+      accountsHeader: 'حسابات FinHub',
+      accountsSubtext: 'اختر حساباً لعرض دفتر PayCore اللحظي',
+      openAccount: '+ فتح حساب جديد',
+      emptyAccounts: 'لا توجد حسابات FinHub حتى الآن. انقر “فتح حساب جديد” لإنشاء حساب جديد.',
+      activity: 'نشاط PayCore',
+      noTransactions: 'لا توجد معاملات PayCore للحساب المحدد في FinHub.',
+      loadMore: 'تحميل المزيد',
+      accountAccount: 'الحساب',
+      accountCurrent: 'الحالي',
+      accountSavings: 'التوفير',
+      noProjectCopy: 'لا توجد بيانات تجريبية',
+      lang: 'EN'
+    }
+  };
+
+  public getText(key: string): string {
+    const locale = this.language() === 'ar' ? this.translation.ar : this.translation.en;
+    return locale[key] ?? this.translation.en[key] ?? key;
+  }
+
+  public toggleLanguage(): void {
+    this.language.set(this.language() === 'en' ? 'ar' : 'en');
+  }
 
   public showCreateModal = signal(false);
   public showActionModal = signal(false);
