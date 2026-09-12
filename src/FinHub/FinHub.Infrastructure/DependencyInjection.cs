@@ -1,6 +1,7 @@
 using FinHub.Application.Common.Interfaces;
 using FinHub.Infrastructure.Persistence;
 using FinHub.Infrastructure.Security;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ public static class DependencyInjection
 
         services.AddDbContext<FinHubDbContext>(options =>
         {
-            if (!string.IsNullOrWhiteSpace(connectionString))
+            if (IsValidSqlServerConnectionString(connectionString))
             {
                 options.UseSqlServer(connectionString);
             }
@@ -33,5 +34,19 @@ public static class DependencyInjection
         services.AddSingleton<IOAuthService, OAuthService>();
 
         return services;
+    }
+
+    private static bool IsValidSqlServerConnectionString(string? cs)
+    {
+        if (string.IsNullOrWhiteSpace(cs)) return false;
+        try
+        {
+            var builder = new SqlConnectionStringBuilder(cs);
+            return !string.IsNullOrWhiteSpace(builder.DataSource);
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
