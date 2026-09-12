@@ -13,7 +13,10 @@ public sealed class Customer
     public UserRole Role { get; private set; }
     public NationalId? NationalId { get; private set; }
     public Address? Address { get; private set; }
+    public PhoneNumber? PhoneNumber { get; private set; }
+    public bool IsPhoneNumberVerified { get; private set; }
     public bool IsEmailVerified { get; private set; }
+    public List<ExternalLogin> ExternalLogins { get; private set; } = new();
     public bool IsMfaEnabled { get; private set; }
     public string? MfaSecret { get; set; }
     public string? RefreshToken { get; private set; }
@@ -78,6 +81,28 @@ public sealed class Customer
     {
         Address = address;
         UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void SetPhoneNumber(PhoneNumber phoneNumber)
+    {
+        PhoneNumber = phoneNumber;
+        IsPhoneNumberVerified = false;
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void VerifyPhoneNumber()
+    {
+        IsPhoneNumberVerified = true;
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void AddExternalLogin(string provider, string providerKey, string email)
+    {
+        if (!ExternalLogins.Any(x => x.Provider.Equals(provider, StringComparison.OrdinalIgnoreCase) && x.ProviderKey == providerKey))
+        {
+            ExternalLogins.Add(new ExternalLogin(provider, providerKey, email, DateTimeOffset.UtcNow));
+            UpdatedAt = DateTimeOffset.UtcNow;
+        }
     }
 
     public void EnableMfa(string secret)

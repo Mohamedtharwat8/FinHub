@@ -29,6 +29,8 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<ITotpService, TotpService>();
+        services.AddSingleton<IOtpService, OtpService>();
+        services.AddSingleton<IOAuthService, OAuthService>();
 
         return services;
     }

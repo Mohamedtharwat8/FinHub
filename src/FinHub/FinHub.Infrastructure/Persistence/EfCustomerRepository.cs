@@ -24,6 +24,16 @@ public sealed class EfCustomerRepository : ICustomerRepository
         return await _context.Customers.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
     }
 
+    public async Task<Customer?> GetByPhoneNumberAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default)
+    {
+        return await _context.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber, cancellationToken);
+    }
+
+    public async Task<Customer?> GetByExternalLoginAsync(string provider, string providerKey, CancellationToken cancellationToken = default)
+    {
+        return await _context.Customers.FirstOrDefaultAsync(c => c.ExternalLogins.Any(x => x.Provider == provider && x.ProviderKey == providerKey), cancellationToken);
+    }
+
     public async Task<Customer?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         return await _context.Customers.FirstOrDefaultAsync(c => c.RefreshToken == refreshToken && c.RefreshTokenExpiryTime > DateTimeOffset.UtcNow, cancellationToken);

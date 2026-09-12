@@ -21,6 +21,18 @@ public sealed class CustomerRepository : ICustomerRepository
         return Task.FromResult(customer);
     }
 
+    public Task<Customer?> GetByPhoneNumberAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default)
+    {
+        var customer = Storage.Values.FirstOrDefault(c => c.PhoneNumber == phoneNumber);
+        return Task.FromResult(customer);
+    }
+
+    public Task<Customer?> GetByExternalLoginAsync(string provider, string providerKey, CancellationToken cancellationToken = default)
+    {
+        var customer = Storage.Values.FirstOrDefault(c => c.ExternalLogins.Any(x => x.Provider.Equals(provider, StringComparison.OrdinalIgnoreCase) && x.ProviderKey == providerKey));
+        return Task.FromResult(customer);
+    }
+
     public Task<Customer?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         var customer = Storage.Values.FirstOrDefault(c => c.RefreshToken == refreshToken && c.RefreshTokenExpiryTime > DateTimeOffset.UtcNow);
