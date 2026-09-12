@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/FinHub/">
+    <Project Path="src/FinHub/FinHub.Api/FinHub.Api.csproj" />
+    <Project Path="src/FinHub/FinHub.Application/FinHub.Application.csproj" />
+    <Project Path="src/FinHub/FinHub.Domain/FinHub.Domain.csproj" />
+    <Project Path="src/FinHub/FinHub.Infrastructure/FinHub.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/PayCore/" />
+  <Folder Name="/src/PayCore/Services/">
+    <Project Path="src/PayCore/Services/PayCore.FraudEngine/PayCore.FraudEngine.csproj" />
+    <Project Path="src/PayCore/Services/PayCore.LedgerService/PayCore.LedgerService.csproj" />
+    <Project Path="src/PayCore/Services/PayCore.PaymentService/PayCore.PaymentService.csproj" />
+  </Folder>
+  <Folder Name="/src/PayCore/Shared/">
+    <Project Path="src/PayCore/Shared/PayCore.BuildingBlocks/PayCore.BuildingBlocks.csproj" />
+    <Project Path="src/PayCore/Shared/PayCore.Domain/PayCore.Domain.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FinHub.Api.IntegrationTests/FinHub.Api.IntegrationTests.csproj" />
+    <Project Path="tests/FinHub.Domain.UnitTests/FinHub.Domain.UnitTests.csproj" />
+    <Project Path="tests/PayCore.Ledger.UnitTests/PayCore.Ledger.UnitTests.csproj" />
+  </Folder>
+</Solution>

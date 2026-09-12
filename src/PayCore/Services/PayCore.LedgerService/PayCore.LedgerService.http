@@ -1,0 +1,6 @@
+@PayCore.LedgerService_HostAddress = http://localhost:5184
+
+GET {{PayCore.LedgerService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
