@@ -45,44 +45,52 @@ import { AuthService } from '../../../core/auth/auth.service';
 
         <a href="javascript:void(0)" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
+            <path d="M12 2a10 10 0 1 0 10 10"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+            <path d="M8 12h8"/>
+            <path d="M12 8v8"/>
           </svg>
-          <span i18n="@@nav.transfers">Transfers &amp; Email</span>
+          <span i18n="@@nav.sama">SAMA Open Banking</span>
         </a>
 
         <a href="javascript:void(0)" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            <path d="M3 12h7l3-7 3 14 2-7h5"/>
           </svg>
-          <span i18n="@@nav.helpDesk">Help Desk</span>
+          <span i18n="@@nav.transactions">Transactions &amp; Ledger</span>
         </a>
 
         <a href="javascript:void(0)" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            <path d="M4 19h16"/>
+            <path d="M5 15l4-4 4 4 5-8"/>
           </svg>
-          <span i18n="@@nav.billing">Billing</span>
+          <span i18n="@@nav.budgeting">Budgeting &amp; Alerts</span>
         </a>
 
         <a href="javascript:void(0)" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-            <polyline points="10 17 15 12 10 7"/>
-            <line x1="15" y1="12" x2="3" y2="12"/>
+            <rect x="3" y="7" width="18" height="13" rx="2"/>
+            <path d="M3 10h18"/>
+            <path d="M7 15h10"/>
           </svg>
-          <span i18n="@@nav.auth">Authentication</span>
+          <span i18n="@@nav.paycore">PayCore Payments</span>
         </a>
 
         <a href="javascript:void(0)" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="20" x2="18" y2="10"/>
-            <line x1="12" y1="20" x2="12" y2="4"/>
-            <line x1="6" y1="20" x2="6" y2="14"/>
+            <path d="M12 3l8 4v5c0 5.6-2 8.4-8 10-6-1.6-8-4.4-8-10V7z"/>
+            <path d="M9 12l2 2 4-4"/>
           </svg>
-          <span i18n="@@nav.reports">Reports</span>
+          <span i18n="@@nav.fraud">Fraud Engine</span>
+        </a>
+
+        <a href="javascript:void(0)" class="nav-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16v10H4z"/>
+            <path d="M4 17h16v4H4z"/>
+          </svg>
+          <span i18n="@@nav.reconciliation">Reconciliation</span>
         </a>
       </nav>
 
