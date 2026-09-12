@@ -1,6 +1,6 @@
 using FinHub.Application.Common.Interfaces;
 using FinHub.Application.Modules.Identity.DTOs;
-using FinHub.Domain.Entities;
+using CustomerEntity = FinHub.Domain.Entities.Customer;
 using FinHub.Domain.Enums;
 using FinHub.Domain.ValueObjects;
 
@@ -39,7 +39,7 @@ public sealed class IdentityService : IIdentityService
         }
 
         var passwordHash = _passwordHasher.HashPassword(request.Password);
-        var customer = Customer.Create(email, request.FullName, passwordHash, UserRole.Customer);
+        var customer = CustomerEntity.Create(email, request.FullName, passwordHash, UserRole.Customer);
 
         var (token, expiration) = _jwtTokenGenerator.GenerateAccessToken(customer);
         var refreshToken = _jwtTokenGenerator.GenerateRefreshToken();
