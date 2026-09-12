@@ -6,6 +6,7 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { BankingService, BankAccountDto, TransactionDto } from '../../../core/banking/banking.service';
+import { CustomerService, CustomerProfileDto } from '../../../core/customer/customer.service';
 
 @Component({
   selector: 'app-banking-dashboard',
@@ -37,7 +38,7 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
             <!-- Welcome Header -->
             <div class="welcome-header">
               <h1>Hey there, {{ userName() }}</h1>
-              <p class="subtext">Here's what's happening in your Govera account today</p>
+              <p class="subtext">Here's what's happening in your FinHub + PayCore workspace today</p>
             </div>
 
             <!-- Stat Metric Cards Row -->
@@ -48,10 +49,10 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
                   </svg>
                 </div>
-                <div class="kpi-label">Account Created</div>
+                <div class="kpi-label">FinHub Balance</div>
                 <div class="kpi-val-row">
-                  <span class="kpi-value">{{ totalBalance() > 0 ? (totalBalance() | number:'1.0-0') : '4,861' }}</span>
-                  <span class="badge-trend green">↑ 20%</span>
+                  <span class="kpi-value">{{ totalBalance() > 0 ? (totalBalance() | number:'1.2-2') : '0.00' }}</span>
+                  <span class="badge-trend green">Live</span>
                 </div>
               </div>
 
@@ -61,10 +62,10 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
                   </svg>
                 </div>
-                <div class="kpi-label">People Created</div>
+                <div class="kpi-label">FinHub Accounts</div>
                 <div class="kpi-val-row">
-                  <span class="kpi-value">{{ accounts().length > 0 ? accounts().length : '424' }}</span>
-                  <span class="badge-trend red">↓ 40%</span>
+                  <span class="kpi-value">{{ accounts().length }}</span>
+                  <span class="badge-trend green">Synced</span>
                 </div>
               </div>
 
@@ -74,10 +75,10 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
                 </div>
-                <div class="kpi-label">Open Ticket</div>
+                <div class="kpi-label">PayCore Ledger</div>
                 <div class="kpi-val-row">
-                  <span class="kpi-value">24,258</span>
-                  <span class="badge-trend green">↑ 16%</span>
+                  <span class="kpi-value">{{ transactions().length }}</span>
+                  <span class="badge-trend {{ transactions().length ? 'green' : 'red' }}">{{ transactions().length ? 'Ready' : 'Empty' }}</span>
                 </div>
               </div>
             </div>
@@ -159,80 +160,22 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
               </div>
 
               <div class="activity-group">
-                <div class="date-tag">🗓 Today</div>
+                <div class="date-tag">🗓 {{ selectedAccount()?.type || 'FinHub' }} ledger</div>
 
                 <div class="activity-list">
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Alex Chen addressed the support ticket regarding the 'Export Function Glitch'.</div>
-                    <div class="act-time">3:58 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Jordan Lee resolved the support ticket titled 'Export Tool Malfunction'.</div>
-                    <div class="act-time">3:56 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Taylor Kim updated.</div>
-                    <div class="act-time">3:45 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Morgan Smith updated the support ticket concerning the 'Export Capability Issue'.</div>
-                    <div class="act-time">3:41 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Jamie Park reviewed the support ticket named 'Export Functionality Problem'.</div>
-                    <div class="act-time">3:40 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Casey Wong handled the support ticket about the 'Export Feature Error'.</div>
-                    <div class="act-time">3:33 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Riley Johnson checked the support ticket for the 'Export Feature Concern'.</div>
-                    <div class="act-time">3:32 pm</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="activity-group">
-                <div class="date-tag">🗓 December 13</div>
-
-                <div class="activity-list">
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Avery Davis examined the support ticket titled 'Export Feature Challenge'.</div>
-                    <div class="act-time">3:18 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Quinn Taylor updated the support ticket about the 'Export Functionality Glitch'.</div>
-                    <div class="act-time">3:17 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Peyton White addressed the support ticket concerning the 'Export Feature Trouble'.</div>
-                    <div class="act-time">3:17 pm</div>
-                  </div>
-
-                  <div class="activity-item">
-                    <div class="dot blue"></div>
-                    <div class="act-text">Charlie Green resolved the support ticket labeled 'Export Feature Dilemma'.</div>
-                    <div class="act-time">2:41 pm</div>
-                  </div>
+                  @for (tx of transactions(); track tx.id) {
+                    <div class="activity-item">
+                      <div class="dot blue"></div>
+                      <div class="act-text">{{ tx.type }} {{ tx.amount | number:'1.2-2' }} {{ tx.currency }} — {{ tx.description }}</div>
+                      <div class="act-time">{{ tx.transactionDate | date:'shortTime' }}</div>
+                    </div>
+                  } @empty {
+                    <div class="activity-item">
+                      <div class="dot blue"></div>
+                      <div class="act-text">No PayCore ledger transactions are available for the selected FinHub account.</div>
+                      <div class="act-time">--</div>
+                    </div>
+                  }
                 </div>
               </div>
 
@@ -258,9 +201,9 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
             <div class="chart-card">
               <div class="chart-card-header">
                 <div>
-                  <div class="chart-number">424</div>
-                  <div class="chart-title">People</div>
-                  <div class="chart-sub">as of 14-Dec-2025</div>
+                  <div class="chart-number">{{ customer() ? 1 : 0 }}</div>
+                  <div class="chart-title">Customer</div>
+                  <div class="chart-sub">{{ customer()?.fullName || 'FinHub User' }}</div>
                 </div>
                 <button class="btn-share">Share</button>
               </div>
@@ -288,9 +231,9 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
             <div class="chart-card">
               <div class="chart-card-header">
                 <div>
-                  <div class="chart-number">4,861</div>
+                  <div class="chart-number">{{ accounts().length }}</div>
                   <div class="chart-title">Accounts</div>
-                  <div class="chart-sub">as of 14-Dec-2025</div>
+                  <div class="chart-sub">{{ customer()?.email || 'FinHub profile' }}</div>
                 </div>
                 <button class="btn-share">Share</button>
               </div>
@@ -312,9 +255,9 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
             <div class="chart-card">
               <div class="chart-card-header">
                 <div>
-                  <div class="chart-number">2,245</div>
-                  <div class="chart-title">Emails</div>
-                  <div class="chart-sub">as of Q4 2025</div>
+                  <div class="chart-number">{{ totalBalance() | number:'1.2-2' }}</div>
+                  <div class="chart-title">Total Balance</div>
+                  <div class="chart-sub">{{ selectedAccount()?.currency || 'SAR' }}</div>
                 </div>
                 <button class="btn-share">Share ▾</button>
               </div>
@@ -341,9 +284,9 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
             <div class="chart-card">
               <div class="chart-card-header">
                 <div>
-                  <div class="chart-number">7,254</div>
-                  <div class="chart-title">Tickets</div>
-                  <div class="chart-sub">as of 14-Dec-2025</div>
+                  <div class="chart-number">{{ transactions().length }}</div>
+                  <div class="chart-title">PayCore Transactions</div>
+                  <div class="chart-sub">{{ selectedAccount()?.iban || 'No account selected' }}</div>
                 </div>
                 <button class="btn-share">Share ▾</button>
               </div>
@@ -557,11 +500,13 @@ import { BankingService, BankAccountDto, TransactionDto } from '../../../core/ba
 export class BankingDashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private bankingService = inject(BankingService);
+  private customerService = inject(CustomerService);
   private fb = inject(FormBuilder);
 
   public accounts = signal<BankAccountDto[]>([]);
   public selectedAccount = signal<BankAccountDto | null>(null);
   public transactions = signal<TransactionDto[]>([]);
+  public customer = signal<CustomerProfileDto | null>(null);
 
   public showCreateModal = signal(false);
   public showActionModal = signal(false);
@@ -573,7 +518,7 @@ export class BankingDashboardComponent implements OnInit {
   public successMessage = signal<string | null>(null);
 
   public totalBalance = computed(() => this.accounts().reduce((sum, a) => sum + a.balanceAmount, 0));
-  public userName = computed(() => this.authService.currentUser()?.fullName?.split(' ')[0] || 'User');
+  public userName = computed(() => this.customer()?.fullName?.split(' ')[0] || this.authService.currentUser()?.fullName?.split(' ')[0] || 'User');
 
   public createForm = this.fb.group({
     type: ['Savings', [Validators.required]],
@@ -587,6 +532,17 @@ export class BankingDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAccounts();
+    this.loadCustomerProfile();
+  }
+
+  public loadCustomerProfile(): void {
+    const user = this.authService.currentUser();
+    if (!user) return;
+
+    this.customerService.getProfile(user.customerId).subscribe({
+      next: (profile) => this.customer.set(profile),
+      error: () => this.customer.set(null)
+    });
   }
 
   public loadAccounts(): void {
