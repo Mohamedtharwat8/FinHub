@@ -15,7 +15,20 @@ public sealed class BankAccount
     public string AccountNumber { get; private set; }
     public AccountType Type { get; private set; }
     public AccountStatus Status { get; private set; }
-    public Money Balance { get; private set; }
+    
+    public decimal BalanceAmount { get; private set; }
+    public Currency Currency { get; private set; }
+
+    public Money Balance
+    {
+        get => new(BalanceAmount, Currency);
+        private set
+        {
+            BalanceAmount = value.Amount;
+            Currency = value.Currency;
+        }
+    }
+
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
 
@@ -26,7 +39,6 @@ public sealed class BankAccount
     { 
         Iban = null!;
         AccountNumber = null!;
-        Balance = null!;
     }
 
     private BankAccount(Guid customerId, IBAN iban, string accountNumber, AccountType type, Money initialBalance)

@@ -1,5 +1,4 @@
 using FinHub.Domain.Entities;
-using FinHub.Domain.Enums;
 using FinHub.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -38,11 +37,16 @@ public sealed class BankAccountConfiguration : IEntityTypeConfiguration<BankAcco
             .HasMaxLength(20)
             .IsRequired();
 
-        builder.OwnsOne(b => b.Balance, balance =>
-        {
-            balance.Property(m => m.Amount).HasColumnName("Balance_Amount").HasPrecision(18, 2);
-            balance.Property(m => m.Currency).HasColumnName("Balance_Currency").HasConversion<string>().HasMaxLength(3);
-        });
+        builder.Property(b => b.BalanceAmount)
+            .HasColumnName("Balance_Amount")
+            .HasPrecision(18, 2);
+
+        builder.Property(b => b.Currency)
+            .HasColumnName("Balance_Currency")
+            .HasConversion<string>()
+            .HasMaxLength(3);
+
+        builder.Ignore(b => b.Balance);
 
         builder.HasMany(b => b.Transactions)
             .WithOne()

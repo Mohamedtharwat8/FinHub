@@ -1,5 +1,4 @@
 using FinHub.Domain.Entities;
-using FinHub.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -28,10 +27,15 @@ public sealed class TransactionConfiguration : IEntityTypeConfiguration<Transact
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.OwnsOne(t => t.Amount, amount =>
-        {
-            amount.Property(m => m.Amount).HasColumnName("Amount").HasPrecision(18, 2);
-            amount.Property(m => m.Currency).HasColumnName("Currency").HasConversion<string>().HasMaxLength(3);
-        });
+        builder.Property(t => t.AmountValue)
+            .HasColumnName("Amount")
+            .HasPrecision(18, 2);
+
+        builder.Property(t => t.Currency)
+            .HasColumnName("Currency")
+            .HasConversion<string>()
+            .HasMaxLength(3);
+
+        builder.Ignore(t => t.Amount);
     }
 }

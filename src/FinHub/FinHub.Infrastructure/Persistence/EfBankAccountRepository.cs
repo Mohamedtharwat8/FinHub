@@ -44,7 +44,6 @@ public sealed class EfBankAccountRepository : IBankAccountRepository
 
     public async Task UpdateAsync(BankAccount account, CancellationToken cancellationToken = default)
     {
-        _context.BankAccounts.Update(account);
         await _context.SaveChangesAsync(cancellationToken);
     }
 }
