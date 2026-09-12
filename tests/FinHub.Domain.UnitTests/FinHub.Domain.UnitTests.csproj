@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FinHub\FinHub.Domain\FinHub.Domain.csproj" />
+    <ProjectReference Include="..\..\src\FinHub\FinHub.Infrastructure\FinHub.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
