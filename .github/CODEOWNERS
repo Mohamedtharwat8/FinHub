@@ -1,0 +1,7 @@
+# FinTech Engineering Repository Code Owners
+* @mohamedth8
+.github/workflows/ @mohamedth8
+src/FinHub/ @mohamedth8
+src/PayCore/ @mohamedth8
+src/Web/ @mohamedth8
+docs/ @mohamedth8
