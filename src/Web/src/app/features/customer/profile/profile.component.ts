@@ -1,19 +1,26 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService, CustomerProfileDto } from '../../../core/customer/customer.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
     <div class="profile-container">
       <div class="profile-card" *ngIf="profile() as p">
         <div class="header">
-          <h2>Customer Profile</h2>
-          <span class="badge" [class.citizen]="p.isCitizen">{{ p.isCitizen ? 'Saudi Citizen' : 'Resident' }}</span>
+          <div>
+            <h2>Customer Profile</h2>
+            <span class="badge" [class.citizen]="p.isCitizen">{{ p.isCitizen ? 'Saudi Citizen' : 'Resident' }}</span>
+          </div>
+          <div class="header-actions">
+            <button class="btn-nav" routerLink="/dashboard/accounts">🏦 Banking Dashboard</button>
+            <button class="btn-nav danger" (click)="onLogout()">Sign Out</button>
+          </div>
         </div>
 
         <div class="info-grid">
@@ -77,7 +84,7 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
             </div>
           </div>
 
-          <button type="submit" [disabled]="addressForm.invalid || isSaving()">
+          <button type="submit" class="btn-submit" [disabled]="addressForm.invalid || isSaving()">
             {{ isSaving() ? 'Saving Address...' : 'Update Address' }}
           </button>
         </form>
@@ -86,10 +93,13 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
   `,
   styles: [`
     .profile-container { padding: 2rem; display: flex; justify-content: center; }
-    .profile-card { background: #1e1e2d; padding: 2rem; border-radius: 12px; width: 100%; max-width: 650px; color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .profile-card { background: #1e1e2d; padding: 2rem; border-radius: 12px; width: 100%; max-width: 680px; color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+    .header-actions { display: flex; gap: 0.5rem; }
+    .btn-nav { background: #3699ff; color: #fff; border: none; padding: 0.5rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-nav.danger { background: #f1416c; }
     h2, h3 { margin: 0; color: #fff; }
-    .badge { background: #00c588; color: #fff; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+    .badge { background: #00c588; color: #fff; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-top: 0.4rem; }
     .badge.citizen { background: #3699ff; }
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
     .info-item { display: flex; flex-direction: column; }
@@ -101,7 +111,7 @@ import { CustomerService, CustomerProfileDto } from '../../../core/customer/cust
     label { font-size: 0.85rem; margin-bottom: 0.5rem; color: #b5b5c3; }
     input { background: #151521; border: 1px solid #2b2b40; padding: 0.65rem; border-radius: 6px; color: #fff; outline: none; }
     input:focus { border-color: #3699ff; }
-    button { background: #3699ff; border: none; color: #fff; padding: 0.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem; width: 100%; }
+    .btn-submit { background: #3699ff; border: none; color: #fff; padding: 0.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem; width: 100%; }
     .success-alert { background: #00c588; color: #fff; padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; }
   `]
 })
@@ -152,5 +162,9 @@ export class ProfileComponent implements OnInit {
       },
       error: () => this.isSaving.set(false)
     });
+  }
+
+  public onLogout(): void {
+    this.authService.logout();
   }
 }
