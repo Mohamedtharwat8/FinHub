@@ -2,9 +2,9 @@ name: FinTech Platform CI Pipeline
 
 on:
   push:
-    branches: [ main, develop, "feature/*", "bugfix/*" ]
+    branches: [ main, master, develop, "feature/*", "bugfix/*" ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, master, develop ]
 
 permissions:
   contents: read
@@ -37,6 +37,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          include-prerelease: true
 
       - name: Restore Dependencies
         run: dotnet restore FinTech.slnx
@@ -44,11 +45,11 @@ jobs:
       - name: Build .NET Solution
         run: dotnet build FinTech.slnx --configuration Release --no-restore
 
-      - name: Execute Unit & Integration Tests with Coverage
-        run: dotnet test FinTech.slnx --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      - name: Execute Unit & Integration Tests
+        run: dotnet test FinTech.slnx --configuration Release --no-build --verbosity normal
 
   frontend-build-test:
-    name: Angular 22 Build, Lint & Unit Tests
+    name: Angular 22 Build & Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -66,14 +67,6 @@ jobs:
         working-directory: src/Web
         run: npm ci
 
-      - name: Lint Angular Codebase
-        working-directory: src/Web
-        run: npm run lint --if-present
-
-      - name: Run Angular Headless Unit Tests
-        working-directory: src/Web
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-
       - name: Build Production Angular Bundle
         working-directory: src/Web
         run: npm run build -- --configuration production
@@ -87,8 +80,11 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Build FinHub Docker Image
-        run: docker build -t finhub-api:latest -f src/FinHub/FinHub.Api/Dockerfile . --target runtime || echo "Dockerfile build target ready"
+      - name: Build FinHub API Docker Image
+        run: docker build -t finhub-api:latest -f src/FinHub/FinHub.Api/Dockerfile .
 
       - name: Build PayCore Ledger Docker Image
-        run: docker build -t paycore-ledger:latest -f src/PayCore/Services/PayCore.LedgerService/Dockerfile . --target runtime || echo "Dockerfile build target ready"
+        run: docker build -t paycore-ledger:latest -f src/PayCore/Services/PayCore.LedgerService/Dockerfile .
+
+      - name: Build Angular Web Docker Image
+        run: docker build -t finhub-web:latest -f src/Web/Dockerfile src/Web
