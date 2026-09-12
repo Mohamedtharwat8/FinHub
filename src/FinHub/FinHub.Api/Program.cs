@@ -1,5 +1,6 @@
 using FinHub.Application;
 using FinHub.Infrastructure;
+using FinHub.Infrastructure.Persistence;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,18 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors("AllowAngularApp");
+
+// Auto-initialize cloud database schema on startup (Neon PostgreSQL / SQL Server)
+try
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<FinHubDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[Database Auto-Init Warning]: {ex.Message}");
+}
 
 // Always enable Swagger UI in both Development and Production for easy cloud API testing
 app.UseSwagger();
