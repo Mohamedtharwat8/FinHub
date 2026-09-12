@@ -1,5 +1,6 @@
 using FinHub.Application;
 using FinHub.Infrastructure;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.WebHost.UseUrls($"http://*:{port}");
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -25,6 +29,15 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors("AllowAngularApp");
+
+// Always enable Swagger UI in both Development and Production for easy cloud API testing
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinHub API v1");
+    c.RoutePrefix = "swagger";
+});
+
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Ok(new
@@ -33,6 +46,7 @@ app.MapGet("/", () => Results.Ok(new
     Service = "FinHub Open Banking & PFM API",
     Framework = ".NET 10 (C# 14)",
     Environment = app.Environment.EnvironmentName,
+    SwaggerUI = "/swagger",
     Timestamp = DateTimeOffset.UtcNow
 }));
 
