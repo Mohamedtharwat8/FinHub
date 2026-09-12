@@ -36,7 +36,7 @@ try
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<FinHubDbContext>();
-    
+
     if (dbContext.Database.IsNpgsql())
     {
         var pgSql = @"
@@ -105,6 +105,20 @@ CREATE TABLE IF NOT EXISTS ""Transactions"" (
     ""TransactionDate"" timestamptz NOT NULL,
     CONSTRAINT ""PK_Transactions"" PRIMARY KEY (""Id""),
     CONSTRAINT ""FK_Transactions_BankAccounts_AccountId"" FOREIGN KEY (""AccountId"") REFERENCES ""BankAccounts"" (""Id"") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ""BudgetSnapshots"" (
+    ""Id"" uuid NOT NULL,
+    ""CustomerId"" uuid NOT NULL,
+    ""Month"" timestamptz NOT NULL,
+    ""MonthlyBudget"" numeric(18,2) NOT NULL,
+    ""MonthlySpent"" numeric(18,2) NOT NULL,
+    ""RemainingBudget"" numeric(18,2) NOT NULL,
+    ""SavingsGoal"" numeric(18,2) NOT NULL,
+    ""Currency"" varchar(3) NOT NULL,
+    ""CreatedAt"" timestamptz NOT NULL,
+    ""UpdatedAt"" timestamptz NULL,
+    CONSTRAINT ""PK_BudgetSnapshots"" PRIMARY KEY (""Id"")
 );
 ";
         dbContext.Database.ExecuteSqlRaw(pgSql);

@@ -12,8 +12,8 @@ public sealed class FinHubDbContextFactory : IDesignTimeDbContextFactory<FinHubD
         var connectionString = args.Length > 0 ? args[0] : null;
         if (string.IsNullOrWhiteSpace(connectionString))
         {
-            connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection") 
-                               ?? "Server=localhost;Database=FinHubLocalDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;";
+            connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+                               ?? "Host=localhost;Port=5432;Database=FinHubLocalDb;Username=postgres;Password=postgres;Trust Server Certificate=true;";
         }
 
         if (connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase) ||

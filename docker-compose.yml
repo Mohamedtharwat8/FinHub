@@ -1,16 +1,17 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: fintech-sqlserver
+  postgres:
+    image: postgres:16-alpine
+    container_name: fintech-postgres
     environment:
-      - SA_PASSWORD=FinTechSecurePassword2026!
-      - ACCEPT_EULA=Y
+      POSTGRES_DB: FinHubLocalDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - sqlserver_data:/var/opt/mssql/data
+      - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: redis:7-alpine
@@ -30,5 +31,5 @@ services:
       - "10002:10002"
 
 volumes:
-  sqlserver_data:
+  postgres_data:
   redis_data:
